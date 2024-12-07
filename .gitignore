@@ -4,10 +4,7 @@ downloadManager/target/
 !downloadManager/**/src/test/**/target/
 
 ### IntelliJ IDEA ###
-downloadManager/.idea/modules.xml
-downloadManager/.idea/jarRepositories.xml
-downloadManager/.idea/compiler.xml
-downloadManager/.idea/libraries/
+downloadManager/.idea
 downloadManager/*.iws
 downloadManager/*.iml
 downloadManager/*.ipr
