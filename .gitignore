@@ -1,4 +1,4 @@
-target/
+downloadManager/target/
 !downloadManager/.mvn/wrapper/maven-wrapper.jar
 !downloadManager/**/src/main/**/target/
 !downloadManager/**/src/test/**/target/
