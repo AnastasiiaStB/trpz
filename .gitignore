@@ -1,0 +1,13 @@
+target/
+!downloadManager/.mvn/wrapper/maven-wrapper.jar
+!downloadManager/**/src/main/**/target/
+!downloadManager/**/src/test/**/target/
+
+### IntelliJ IDEA ###
+downloadManager/.idea/modules.xml
+downloadManager/.idea/jarRepositories.xml
+downloadManager/.idea/compiler.xml
+downloadManager/.idea/libraries/
+downloadManager/*.iws
+downloadManager/*.iml
+downloadManager/*.ipr
