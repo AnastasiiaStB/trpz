@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.composite.DownloadGroup;
+import org.example.composite.SingleDownload;
 import org.example.model.Download;
 import org.example.model.DownloadStatus;
 import org.example.templatemethod.AbstractDownload;
@@ -13,12 +15,20 @@ public class DownloadManagerApp {
         Download httpsFile = new Download("file2.txt", "https://secure.com/file2", 2048, DownloadStatus.PENDING, 0.0);
         Download ftpFile = new Download("file3.txt", "ftp://ftpserver.com/file3", 4096, DownloadStatus.PENDING, 0.0);
 
-        AbstractDownload httpDownload = new HttpDownload(httpFile);
-        AbstractDownload httpsDownload = new HttpsDownload(httpsFile);
-        AbstractDownload ftpDownload = new FtpDownload(ftpFile);
+        SingleDownload httpDownload = new SingleDownload(httpFile);
+        SingleDownload httpsDownload = new SingleDownload(httpsFile);
+        SingleDownload ftpDownload = new SingleDownload(ftpFile);
 
-        httpDownload.executeDownload();
-        httpsDownload.executeDownload();
-        ftpDownload.executeDownload();
+        DownloadGroup httpGroup = new DownloadGroup("HTTP Downloads");
+        httpGroup.add(httpDownload);
+        httpGroup.add(httpsDownload);
+
+        DownloadGroup allDownloads = new DownloadGroup("All Downloads");
+        allDownloads.add(httpGroup);
+        allDownloads.add(ftpDownload);
+        
+        allDownloads.showDetails();
+        allDownloads.start();
+        allDownloads.pause();
     }
 }
