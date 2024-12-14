@@ -1,34 +1,47 @@
 package org.example;
 
-import org.example.composite.DownloadGroup;
-import org.example.composite.SingleDownload;
-import org.example.model.Download;
-import org.example.model.DownloadStatus;
-import org.example.templatemethod.AbstractDownload;
-import org.example.templatemethod.FtpDownload;
-import org.example.templatemethod.HttpDownload;
-import org.example.templatemethod.HttpsDownload;
+import org.example.p2p.DownloadManager;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class DownloadManagerApp {
-    public static void main(String[] args) {
-        Download httpFile = new Download("file1.txt", "http://example.com/file1", 1024, DownloadStatus.PENDING, 0.0);
-        Download httpsFile = new Download("file2.txt", "https://secure.com/file2", 2048, DownloadStatus.PENDING, 0.0);
-        Download ftpFile = new Download("file3.txt", "ftp://ftpserver.com/file3", 4096, DownloadStatus.PENDING, 0.0);
+    public static void main(String[] args) throws IOException {
+        System.out.println("Enter P2P server port:");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int port = Integer.parseInt(reader.readLine());
 
-        SingleDownload httpDownload = new SingleDownload(httpFile);
-        SingleDownload httpsDownload = new SingleDownload(httpsFile);
-        SingleDownload ftpDownload = new SingleDownload(ftpFile);
+        DownloadManager manager = new DownloadManager(port);
+        System.out.println("Download Manager with P2P Server Started.");
+        System.out.println("Commands: ADD [URL] [FILE], PAUSE [ID], RESUME [ID], SHOW, SEND [FILE] [HOST] [PORT], EXIT");
 
-        DownloadGroup httpGroup = new DownloadGroup("HTTP Downloads");
-        httpGroup.add(httpDownload);
-        httpGroup.add(httpsDownload);
+        while (true) {
+            String input = reader.readLine();
+            String[] parts = input.split(" ", 4);
 
-        DownloadGroup allDownloads = new DownloadGroup("All Downloads");
-        allDownloads.add(httpGroup);
-        allDownloads.add(ftpDownload);
-        
-        allDownloads.showDetails();
-        allDownloads.start();
-        allDownloads.pause();
+            switch (parts[0].toUpperCase()) {
+                case "ADD":
+                    manager.addDownload(parts[1], parts[2]);
+                    break;
+                case "PAUSE":
+                    manager.pauseDownload(parts[1]);
+                    break;
+                case "RESUME":
+                    manager.resumeDownload(parts[1]);
+                    break;
+                case "SHOW":
+                    manager.showStatistics();
+                    break;
+                case "SEND":
+                    manager.sendFile(parts[1], parts[2], Integer.parseInt(parts[3]));
+                    break;
+                case "EXIT":
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid command.");
+            }
+        }
     }
 }
